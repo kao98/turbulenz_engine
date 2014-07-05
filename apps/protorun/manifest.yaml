@@ -1,0 +1,17 @@
+aspect_ratio: '16:9'
+canvas_main: ''
+cover_art: ''
+deploy_files: []
+deployed: Never
+engine_version: '0.28'
+flash_main: ''
+has_notifications: false
+is_multiplayer: false
+is_temp: false
+mapping_table: ''
+modified: 20:52 | 18/06/2014
+path: G:\Aurelien\Documents\GitHub\turbulenz-engine\turbulenz_engine\apps\protorun
+plugin_main: ''
+slug: proto-run
+title: Proto-Run!
+title_logo: ''

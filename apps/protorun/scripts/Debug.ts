@@ -4,7 +4,7 @@
     private fps: number;
     private physics2dDebug: Physics2DDebugDraw;
 
-    constructor(graphicsDevice: GraphicsDevice, width, height) {
+    constructor(graphicsDevice: GraphicsDevice, width: number, height: number) {
         this.fpsElement = document.getElementById("fpscounter");
         this.fps = 0;
 
@@ -28,8 +28,8 @@
 
     public setFps(fps: number): Debug {
 
-        var fps = Math.round(fps);
-        if (fps != this.fps) {
+        fps = Math.round(fps);
+        if (fps !== this.fps) {
             this.fpsElement.innerHTML = fps + " fps";
             this.fps = fps;
         }

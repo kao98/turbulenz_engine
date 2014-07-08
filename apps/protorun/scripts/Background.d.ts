@@ -1,4 +1,4 @@
-﻿interface Drawer {
+﻿interface IDrawer {
     begin(blending?: string): void;
     draw(what: Object): void;
     drawSprite(sprite: Draw2DSprite): void;
@@ -17,7 +17,7 @@ declare class BackgroundTile {
     public init(): BackgroundTile;
     public load(application: Application): BackgroundTile;
     public update(time: GameTime): BackgroundTile;
-    public draw(drawer: Drawer, width: number, height: number): BackgroundTile;
+    public draw(drawer: IDrawer, width: number, height: number): BackgroundTile;
 }
 declare class Background {
     private skyColor;
@@ -27,7 +27,7 @@ declare class Background {
     constructor();
     public init(application: Application): Background;
     public load(): Background;
-    public draw(drawer: Drawer): Background;
+    public draw(drawer: IDrawer): Background;
     public update(time: GameTime): Background;
     static create(): Background;
 }

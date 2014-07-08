@@ -19,9 +19,9 @@ TurbulenzEngine.onload = function onloadFn(): void {
 
     var application: Application = Application.create();
 
-    TurbulenzEngine.onunload = function onUnloadFn() {
+    TurbulenzEngine.onunload = function onUnloadFn(): void {
         application.shutdown();
-    }
+    };
     
     application
         .init()

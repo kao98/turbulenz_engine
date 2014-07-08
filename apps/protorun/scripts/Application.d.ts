@@ -17,6 +17,7 @@ declare class Application {
     private ship;
     private background;
     private debug;
+    private asteroid;
     public time: GameTime;
     public width: number;
     public height: number;
@@ -26,6 +27,7 @@ declare class Application {
     public getWidthRatio(): number;
     public getHeightRatio(): number;
     private _initWorld();
+    private _addAsteroid();
     private _initPlayer();
     private _draw();
     private _clamp();

@@ -19,8 +19,8 @@
     };
 
     Debug.prototype.setFps = function (fps) {
-        var fps = Math.round(fps);
-        if (fps != this.fps) {
+        fps = Math.round(fps);
+        if (fps !== this.fps) {
             this.fpsElement.innerHTML = fps + " fps";
             this.fps = fps;
         }

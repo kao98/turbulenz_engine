@@ -1,4 +1,4 @@
-﻿interface Drawer {
+﻿interface IDrawer {
     begin(blending?: string)        : void;
     draw(what: Object)              : void;
     drawSprite(sprite: Draw2DSprite): void;
@@ -38,11 +38,13 @@ class BackgroundTile {
 
     public load(application: Application): BackgroundTile {
 
-        if (!this.sprite) this.init();
+        if (!this.sprite) {
+            this.init();
+        }
 
         application.loadTexture(
             this.textureSrc,
-            (texture) => {
+            (texture: Texture): void => {
                 if (texture) {
                     this.sprite.setWidth            (texture.width * application.getWidthRatio());
                     this.sprite.setHeight           (texture.height * application.getHeightRatio());
@@ -63,7 +65,7 @@ class BackgroundTile {
         return this;
     }
 
-    public draw(drawer: Drawer, width: number, height: number): BackgroundTile {
+    public draw(drawer: IDrawer, width: number, height: number): BackgroundTile {
 
         if (this.sprite.getTexture()) {
 
@@ -124,7 +126,7 @@ class Background {
             new BackgroundTile("assets/textures/background-d1-1.png", 2)
         );
 
-        for (var i = 0; i < background.length; i++) {
+        for (var i: number = 0; i < background.length; i++) {
             background[i].init();
         }
 
@@ -134,14 +136,14 @@ class Background {
 
     public load(): Background {
 
-        for (var i = 0; i < this.background.length; i++) {
+        for (var i: number = 0; i < this.background.length; i++) {
             this.background[i].load(this.application);
         }
 
         return this;
     }
 
-    public draw(drawer: Drawer): Background {
+    public draw(drawer: IDrawer): Background {
 
         drawer.begin();
 
@@ -157,7 +159,7 @@ class Background {
 
         drawer.end();
 
-        for (var i = 0; i < this.background.length; i++) {
+        for (var i: number = 0; i < this.background.length; i++) {
             this.background[i].draw(
                 drawer,
                 this.application.width,
@@ -171,7 +173,7 @@ class Background {
 
     public update(time: GameTime): Background {
 
-        for (var i = 0; i < this.background.length; i++) {
+        for (var i: number = 0; i < this.background.length; i++) {
             this.background[i].update(time);
         }
 
@@ -179,7 +181,7 @@ class Background {
     }
 
     static create(): Background {
-        var background = new Background();
+        var background: Background = new Background();
         return background;
     }
 }

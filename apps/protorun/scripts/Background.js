@@ -19,8 +19,9 @@
 
     BackgroundTile.prototype.load = function (application) {
         var _this = this;
-        if (!this.sprite)
+        if (!this.sprite) {
             this.init();
+        }
 
         application.loadTexture(this.textureSrc, function (texture) {
             if (texture) {
@@ -83,8 +84,6 @@ var Background = (function () {
         background.push(new BackgroundTile("assets/textures/background-s-1.png", 1));
 
         background.push(new BackgroundTile("assets/textures/background-d1-1.png", 2));
-
-        background.push(new BackgroundTile("assets/textures/background-d1-1.png", 6));
 
         for (var i = 0; i < background.length; i++) {
             background[i].init();

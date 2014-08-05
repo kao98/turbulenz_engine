@@ -21,3 +21,7 @@ apps/protorun/bin/protorun.dll
 *.dll
 *.pdb
 apps/protorun/obj/Debug/protorun.csproj.FileListAbsolute.txt
+apps/protorun/bin/protorun.dll
+apps/protorun/bin/protorun.dll
+tools/cgfx2json/ipch/cgfx2json-2013-5be53c5f/cgfx2json-6ae763c0.ipch
+tools/cgfx2json/ipch/cgfx2json-2013-5be53c5f/cgfx2json-a324663a.ipch

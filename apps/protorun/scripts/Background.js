@@ -36,8 +36,8 @@
         return this;
     };
 
-    BackgroundTile.prototype.update = function (time) {
-        this.sprite.x -= this.speed / (time.tick * 1000);
+    BackgroundTile.prototype.update = function (time, gameSpeed) {
+        this.sprite.x -= (this.speed * gameSpeed) / (time.tick * 1000);
 
         return this;
     };
@@ -81,9 +81,9 @@ var Background = (function () {
 
         var background = this.background = new Array();
 
-        background.push(new BackgroundTile("assets/textures/background-s-1.png", 1));
+        background.push(new BackgroundTile("assets/textures/background-s-1.png", 1 / 5));
 
-        background.push(new BackgroundTile("assets/textures/background-d1-1.png", 2));
+        background.push(new BackgroundTile("assets/textures/background-d1-1.png", 1 / 4));
 
         for (var i = 0; i < background.length; i++) {
             background[i].init();
@@ -125,7 +125,7 @@ var Background = (function () {
 
     Background.prototype.update = function (time) {
         for (var i = 0; i < this.background.length; i++) {
-            this.background[i].update(time);
+            this.background[i].update(time, this.application.getSpeed());
         }
 
         return this;

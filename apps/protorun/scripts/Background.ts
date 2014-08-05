@@ -58,9 +58,9 @@ class BackgroundTile {
         return this;
     }
 
-    public update(time: GameTime): BackgroundTile {
+    public update(time: GameTime, gameSpeed: number): BackgroundTile {
 
-        this.sprite.x -= this.speed / (time.tick * 1000);
+        this.sprite.x -= (this.speed * gameSpeed) / (time.tick * 1000);
 
         return this;
     }
@@ -119,11 +119,11 @@ class Background {
             = new Array<BackgroundTile>();
 
         background.push(
-            new BackgroundTile("assets/textures/background-s-1.png", 1)
+            new BackgroundTile("assets/textures/background-s-1.png", 1 / 5)
         );
 
         background.push(
-            new BackgroundTile("assets/textures/background-d1-1.png", 2)
+            new BackgroundTile("assets/textures/background-d1-1.png", 1 / 4)
         );
 
         for (var i: number = 0; i < background.length; i++) {
@@ -174,7 +174,7 @@ class Background {
     public update(time: GameTime): Background {
 
         for (var i: number = 0; i < this.background.length; i++) {
-            this.background[i].update(time);
+            this.background[i].update(time, this.application.getSpeed());
         }
 
         return this;

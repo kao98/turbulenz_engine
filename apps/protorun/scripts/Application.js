@@ -32,6 +32,8 @@ var Application = (function () {
         this.physics2dDevice = Physics2DDevice.create();
         this.inputDevice = TurbulenzEngine.createInputDevice({});
         this.time = new GameTime(TurbulenzEngine.time);
+        this.speed = 1;
+        this.movingShip = 0;
 
         this.draw2d.configure({
             viewportRectangle: [0, 0, this.width, this.height],
@@ -51,9 +53,9 @@ var Application = (function () {
         this.inputDevice.addEventListener("keydown", function (keycode) {
             if (_this.ship && _this.ship.rigidBody) {
                 if (keycode === 202) {
-                    _this.ship.rigidBody.setVelocity([0, -600]);
+                    _this.movingShip = -1;
                 } else if (keycode === 203) {
-                    _this.ship.rigidBody.setVelocity([0, 600]);
+                    _this.movingShip = 1;
                 }
             }
         });
@@ -61,7 +63,7 @@ var Application = (function () {
         this.inputDevice.addEventListener("keyup", function (keycode) {
             if (_this.ship && _this.ship.rigidBody) {
                 if (keycode === 202 || keycode === 203) {
-                    _this.ship.rigidBody.setVelocity([0, 0]);
+                    _this.movingShip = 0;
                 }
             }
         });
@@ -96,9 +98,13 @@ var Application = (function () {
         return 0;
     };
 
+    Application.prototype.getSpeed = function () {
+        return this.speed;
+    };
+
     Application.prototype._initWorld = function () {
         this.world = this.physics2dDevice.createWorld({
-            gravity: [-30, 0]
+            gravity: [-10, 0]
         });
 
         this._initPlayer()._addAsteroid();
@@ -110,14 +116,14 @@ var Application = (function () {
         var asteroid = this.asteroid = {
             width: 128,
             height: 128,
-            position: [this.width / 2, -5 + this.height / 2],
+            position: [this.width + 100, -5 + this.height / 2],
             shape: null,
             rigidBody: null,
             sprite: null
         };
 
         asteroid.shape = this.physics2dDevice.createPolygonShape({
-            material: this.physics2dDevice.createMaterial({ density: 2.3 }),
+            material: this.physics2dDevice.createMaterial({ density: 5, staticFriction: 0.0000001, dynamicFriction: 0.000001, rollingFriction: 0.000001 }),
             vertices: [
                 [-10, -40],
                 [25, -30],
@@ -152,7 +158,7 @@ var Application = (function () {
             }
         });
 
-        asteroid.rigidBody.setVelocity([-150, 2]);
+        asteroid.rigidBody.setVelocity([-120 - (this.getSpeed() / 5), 2]);
         asteroid.rigidBody.setAngularVelocity(0.25);
 
         return this;
@@ -231,6 +237,12 @@ var Application = (function () {
         if (this.asteroid.rigidBody) {
             this.asteroid.rigidBody.getPosition(this.asteroid.position);
 
+            if (this.asteroid.position[0] < -this.asteroid.width) {
+                this.world.removeRigidBody(this.asteroid.rigidBody);
+                this.asteroid.rigidBody = null;
+                this.asteroid.sprite = null;
+            }
+
             if (this.asteroid.sprite) {
                 this.asteroid.sprite.x = this.asteroid.position[0];
                 this.asteroid.sprite.y = this.asteroid.position[1];
@@ -246,7 +258,27 @@ var Application = (function () {
     Application.prototype._clamp = function () {
         if (this.ship) {
             var shipPosition = this.ship.rigidBody.getPosition();
+
+            if (this.ship.rigidBody.getVelocity()[1] < 0 && this.movingShip <= 0 && shipPosition[1] <= 62) {
+                this.ship.rigidBody.setVelocity([
+                    0,
+                    Math.max(this.ship.rigidBody.getVelocity()[1], this.ship.rigidBody.getVelocity()[1] * ((shipPosition[1] - 22) / 40))
+                ]);
+            }
+
+            if (this.ship.rigidBody.getVelocity()[1] > 0 && this.movingShip >= 0 && this.height - shipPosition[1] <= 62) {
+                this.ship.rigidBody.setVelocity([
+                    0,
+                    Math.min(this.ship.rigidBody.getVelocity()[1], this.ship.rigidBody.getVelocity()[1] * ((this.height - shipPosition[1] - 22) / 40))
+                ]);
+            }
+
             shipPosition[1] = Math.min(Math.max(shipPosition[1], 22), this.height - 22);
+
+            if (shipPosition[1] <= 22 || shipPosition[1] >= this.height - 22) {
+                this.ship.rigidBody.setVelocity([0, 0]);
+            }
+
             this.ship.rigidBody.setPosition(shipPosition);
         }
     };
@@ -255,6 +287,10 @@ var Application = (function () {
         this.time.setTime(TurbulenzEngine.time);
 
         this.inputDevice.update();
+
+        if (this.movingShip) {
+            this.ship.rigidBody.setVelocity([0, this.ship.rigidBody.getVelocity()[1] + (this.movingShip * (1000 * this.time.tick))]);
+        }
 
         while (this.world.simulatedTime < this.time.time) {
             this.world.step(1 / this.desiredFps);
@@ -269,11 +305,16 @@ var Application = (function () {
             this.draw2d.clear();
             this._draw();
 
-            //this.debug.draw(this.draw2d, this.world);
+            this.debug.draw(this.draw2d, this.world);
+
             this.graphicsDevice.endFrame();
         }
 
+        this.speed = 1 / (1 + Math.exp(0.01 * -this.time.time + 3)) * 100;
+
         this.debug.setFps(this.graphicsDevice.fps);
+        this.debug.setSpeed(this.getSpeed());
+        this.debug.setTime(this.time.time);
     };
 
     Application.prototype.run = function () {

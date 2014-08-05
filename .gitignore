@@ -17,3 +17,7 @@ jslib-refcheck/
 
 # default local server folder
 /devserver/
+apps/protorun/bin/protorun.dll
+*.dll
+*.pdb
+apps/protorun/obj/Debug/protorun.csproj.FileListAbsolute.txt

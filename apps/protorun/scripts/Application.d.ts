@@ -18,6 +18,8 @@ declare class Application {
     private background;
     private debug;
     private asteroid;
+    private speed;
+    private movingShip;
     public time: GameTime;
     public width: number;
     public height: number;
@@ -26,6 +28,7 @@ declare class Application {
     public loadTexture(src: string, callback: (texture: any) => void): void;
     public getWidthRatio(): number;
     public getHeightRatio(): number;
+    public getSpeed(): number;
     private _initWorld();
     private _addAsteroid();
     private _initPlayer();

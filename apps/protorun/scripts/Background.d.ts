@@ -16,7 +16,7 @@ declare class BackgroundTile {
     constructor(textureSrc: string, speed?: number);
     public init(): BackgroundTile;
     public load(application: Application): BackgroundTile;
-    public update(time: GameTime): BackgroundTile;
+    public update(time: GameTime, gameSpeed: number): BackgroundTile;
     public draw(drawer: IDrawer, width: number, height: number): BackgroundTile;
 }
 declare class Background {

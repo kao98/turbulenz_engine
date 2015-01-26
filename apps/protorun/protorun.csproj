@@ -24,6 +24,8 @@
     <TypeScriptCompile Include="scripts\Application.ts" />
     <TypeScriptCompile Include="scripts\Background.ts" />
     <TypeScriptCompile Include="scripts\Debug.ts" />
+    <TypeScriptCompile Include="scripts\GameTime.ts" />
+    <TypeScriptCompile Include="scripts\Player.ts" />
     <TypeScriptCompile Include="templates\protorun.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

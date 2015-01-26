@@ -1,23 +1,4 @@
-﻿
-class GameTime {
-    public tick             : number = 0;
-    public time             : number = 0;
-    public previousTime     : number = 0;
-
-    constructor(time?: number) {
-        this.setTime(time || 0);
-    }
-
-    public setTime(time: number): void {
-
-        this.previousTime   = this.time;
-        this.time           = time;
-        this.tick           = time - this.previousTime;
-
-    }
-}
-
-class Application {
+﻿class Application {
     
     private intervalId      : any;
     private graphicsDevice  : GraphicsDevice;
@@ -33,6 +14,7 @@ class Application {
     private asteroid        : any;
     private speed           : number;
     private movingShip      : number;
+    private player          : Player;
 
     public time     : GameTime;
     public width    : number;
@@ -103,6 +85,9 @@ class Application {
                 }
             }
         });
+
+        this.player = new Player();
+        this.player.init();
 
         this._initWorld();
 
@@ -370,9 +355,11 @@ class Application {
 
         this.speed = 1 / (1 + Math.exp(0.01 * -this.time.time + 3)) * 100;
         
-        this.debug.setFps(this.graphicsDevice.fps);
-        this.debug.setSpeed(this.getSpeed());
-        this.debug.setTime(this.time.time);
+        this.debug
+            .setFps(this.graphicsDevice.fps)
+            .setSpeed(this.getSpeed())
+            .setTime(this.time.time)
+            .setPlayerInfo(this.player);
         
     }
 
